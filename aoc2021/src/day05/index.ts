@@ -48,7 +48,6 @@ const parseInput = (rawInput: string) => rawInput.split("\n").map(line => line.s
 
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput)
-  console.log(input);
   let grid: number[][] = [];
 
   let lines = input.filter(l => l[0].x == l[1].x || l[0].y == l[1].y)
@@ -70,28 +69,71 @@ const part1 = (rawInput: string) => {
     }
   }
 
-  // console.log(grid)
-
-  var max = -Infinity;
+  var dangers = 0
   for (let y of grid) {
     for(let x  of y ?? []) {
-      if (x != null && x > max) {
-        max = x;
+      if (x != null && x >= 2) {
+        dangers++
       }
     }
   }
 
-  return max
+  return dangers
+}
+
+function markAll(grid: number[][], from: Point, to: Point) {
+  if (from.x == to.x) {
+    const s = Math.min(from.y, to.y)
+    const e = Math.max(from.y, to.y)
+
+    for (let i = s; i <= e; i++) {
+      increment(grid, from.x, i);
+    }
+  } else if (from.y == to.y){
+    const s = Math.min(from.x, to.x)
+    const e = Math.max(from.x, to.x)
+
+    for (let i = s; i <= e; i++) {
+      increment(grid, i, from.y);
+    }
+  } else {
+    // Does not matter
+    const start = from.x < to.x ? from : to; 
+    const end = from.x >= to.x ? from : to; 
+
+    let up = start.y < end.y;
+
+    for (let i = 0; i <= end.x - start.x; i++) {
+      increment(grid, start.x + i, (start.y + (up ? i : -i)));
+    }
+  }
 }
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput)
+  let grid: number[][] = [];
 
-  return
+  let lines = input
+  for(const line of lines) {
+    markAll(grid, line[0], line[1])
+  }
+
+  // console.log("grid", grid)
+
+  var dangers = 0
+  for (let y of grid) {
+    for(let x  of y ?? []) {
+      if (x != null && x >= 2) {
+        dangers++
+      }
+    }
+  }
+
+  return dangers
 }
 
 run({
-  onlyTests: true,
+  onlyTests: false,
   part1: {
     tests: [
       { input: `
@@ -111,7 +153,18 @@ run({
   },
   part2: {
     tests: [
-      // { input: ``, expected: "" },
+      { input: `
+      0,9 -> 5,9
+8,0 -> 0,8
+9,4 -> 3,4
+2,2 -> 2,1
+7,0 -> 7,4
+6,4 -> 2,0
+0,9 -> 2,9
+3,4 -> 1,4
+0,0 -> 8,8
+5,5 -> 8,2
+      `, expected: 12 },
     ],
     solution: part2,
   },
