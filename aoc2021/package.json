@@ -1,0 +1,38 @@
+{
+  "name": "aoc2021",
+  "version": "1.0.0",
+  "description": "Advent of Code 2021 - solutions",
+  "type": "module",
+  "scripts": {
+    "start": "aocrunner day",
+    "build": "aocrunner build",
+    "format": "prettier -w src"
+  },
+  "keywords": [
+    "aoc"
+  ],
+  "author": "Maciej Caderek",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/graphlib": "^2.1.8",
+    "@types/node": "^16.11.6",
+    "@types/ramda": "^0.27.57",
+    "aocrunner": "^1.6.0",
+    "aoctimer": "^2.0.0",
+    "gramma": "^1.6.0",
+    "prettier": "^2.4.1"
+  },
+  "dependencies": {
+    "@arrows/array": "^1.4.1",
+    "@arrows/composition": "^1.2.2",
+    "@arrows/dispatch": "^1.0.3",
+    "@arrows/multimethod": "^2.1.0",
+    "generatorics": "^1.1.0",
+    "graphlib": "^2.1.8",
+    "mathjs": "^10.0.0",
+    "ramda": "^0.27.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
