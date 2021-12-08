@@ -110,13 +110,13 @@
         "solved": true,
         "result": "479",
         "attempts": [],
-        "time": 8.7842
+        "time": 1.2203
       },
       "part2": {
-        "solved": false,
-        "result": null,
+        "solved": true,
+        "result": "1041746",
         "attempts": [],
-        "time": null
+        "time": 42.4315
       }
     },
     {

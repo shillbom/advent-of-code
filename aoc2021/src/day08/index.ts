@@ -21,7 +21,8 @@ import {
 } from "../utils/index.js"
 
 
-const parseInput = (rawInput: string) => rawInput.split("\n").map(row => row.split("|").map(n => n.split(" ").filter(n => n != "").map(n => n.split("").sort().join(""))))
+//const parseInput = (rawInput: string) => rawInput.split("\n").map(row => row.split("|").map(n => n.split(" ").filter(n => n != "").map(n => n.split("").sort().join(""))))
+const parseInput = (rawInput: string) => rawInput.split("\n").map(row => row.split("|").map(n => n.split(" ").filter(n => n != "")))
 
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput)
@@ -90,7 +91,7 @@ const part2 = (rawInput: string) => {
     // used to detect two
     var magicEight = mapFromDigit.get("8")!
     for (let char of mapFromDigit.get("4")!) {
-      magicEight.replace(char, "");
+      magicEight = magicEight.replace(char, "");
     }
 
     for (let digit of joined) {
@@ -128,8 +129,9 @@ const part2 = (rawInput: string) => {
     }
 
     // use map to create output
-    result.push(parseInt(x[1].map(n => mapToDigit.get(n)).join("")));
-    console.log(mapToDigit)
+    var calc = parseInt(x[1].map(n => mapToDigit.get(n)).join(""));
+    console.log(x[1].join(" ") + ":", calc)
+    result.push(calc)
   }
 
   console.log(result)
@@ -137,7 +139,7 @@ const part2 = (rawInput: string) => {
 }
 
 run({
-  onlyTests: true,
+  onlyTests: false,
   part1: {
     tests: [
       { input: `
@@ -169,6 +171,12 @@ run({
       egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb
       gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce`,
       expected: 61229 },
+      { input: `
+      acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf`,
+      expected: 5353 },
+      { input: `
+      bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef`,
+      expected: 1625 },
     ],
     solution: part2,
   },
