@@ -15,12 +15,12 @@
   "license": "ISC",
   "devDependencies": {
     "@types/graphlib": "^2.1.8",
-    "@types/node": "^16.11.6",
-    "@types/ramda": "^0.27.57",
+    "@types/node": "^16.11.12",
+    "@types/ramda": "^0.27.60",
     "aocrunner": "^1.6.0",
     "aoctimer": "^2.0.0",
     "gramma": "^1.6.0",
-    "prettier": "^2.4.1"
+    "prettier": "^2.5.1"
   },
   "dependencies": {
     "@arrows/array": "^1.4.1",
