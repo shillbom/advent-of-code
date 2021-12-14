@@ -19,80 +19,71 @@ function set(x: number, y: number, val: boolean, grid: boolean[][]) {
   grid[y][x] = val;
 }
 
-function draw(grid: boolean[][], x: number, y: number): number {
+function draw(dots: pos[], onlyCount = false): number {
+  let grid: boolean[][] = []
   let count = 0;
-  console.log(x, y)
-  for (let i = 0; i < y; i++) {
+  let maxX = -Infinity
+  let maxY = -Infinity
+  for (let dot of dots) {
+    maxX = math.max(maxX, dot.x)
+    maxY = math.max(maxY, dot.y)
+
+    set(dot.x, dot.y, true, grid)
+  }
+
+  for (let i = 0; i <= maxY; i++) {
     let line = ""
-    for (let j = 0; j < x; j++) {
+    for (let j = 0; j <= maxX; j++) {
       let val = get(j, i, grid) 
       line += val ? "#" : "."
 
       if (val) count++
     }
-    console.log(line)
+
+    if (!onlyCount) {
+      console.log(line)
+    }
   }
 
   return count;
 }
 
-function foldX(grid: boolean[][], fx: number, maxX: number, maxY: number) {
-  for (let y = 0; y <= maxY; y++) {
-    for (let i = 1; i + fx <= maxX; i++) {
-      let val = get(fx + i, y, grid)
-      if (val) {
-        set(fx - i, y, val, grid)
-      }
-    }
-  }
-}
+class pos {
+  x: number
+  y: number
 
-function foldY(grid: boolean[][], fy: number, maxX: number, maxY: number) {
-  for (let i = 1; i + fy <= maxY; i++) {
-    for (let x = 0; x <= maxX; x++) {
-      let val = get(x, fy + i, grid);
-      if (val) {
-        set(x, fy - i, val, grid)
-      }
-    }
+  constructor(x: number, y: number) {
+    this.x = x
+    this.y = y
   }
 }
 
 const part1 = (rawInput: string) => {
+  let dots: pos[] = []
   const [paper, folds] = parseInput(rawInput);
-  let maxX = -Infinity; let maxY = -Infinity
-  let grid: boolean[][] = []
   for (let line of paper.split("\n")) {
     const [xs, ys] = line.split(",")
     const x = parseInt(xs)
     const y = parseInt(ys)
-    if (x > maxX) maxX = x
-    if (y > maxY) maxY = y
-
-    set(x, y, true, grid)
+    
+    dots.push(new pos(x, y))
   }
-
-  maxX++
-  maxY++
-
-  // draw(grid, maxX, maxY)
 
   for (let fold of folds.split("\n")) {
-    console.log(fold)
     const [instr, coords] = fold.split("=")
-    const coord = parseInt(coords)
-    if (instr.endsWith("x")) {
-      foldX(grid, coord, maxX, maxY)
-      maxX = coord;
-    } else {
-      foldY(grid, coord, maxX, maxY)
-      maxY = coord
+    const offset = parseInt(coords)
+    for (let dot of dots) {
+      if (instr.endsWith("x")) {
+        if (dot.x > offset) dot.x = 2 * offset - dot.x
+      } 
+      else {
+        if (dot.y > offset) dot.y = 2 * offset - dot.y
+      }
     }
-
-    // draw(grid, maxX, maxY)
+    console.log(fold, draw(dots, true))
   }
-
-  return draw(grid, maxX, maxY)
+ 
+  draw(dots)
 }
 
 const part2 = (rawInput: string) => {
